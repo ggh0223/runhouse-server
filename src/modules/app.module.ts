@@ -12,7 +12,7 @@ import { AttendanceModule } from './attendance/attendance.module';
 
 @Module({
   imports: [
-    CommonModule,
+    // CommonModule,
     TypeOrmModule.forFeature(entities),
     CrewModule,
     ScheduleModule,
