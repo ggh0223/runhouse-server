@@ -23,9 +23,6 @@ let HttpRequestInterceptor = class HttpRequestInterceptor {
             query: request.query,
             params: request.params,
         });
-        request.user = {
-            userid: 1,
-        };
         return next.handle();
     }
 };

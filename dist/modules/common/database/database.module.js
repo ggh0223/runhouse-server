@@ -8,33 +8,26 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DatabaseModule = void 0;
 const common_1 = require("@nestjs/common");
-const typeorm_1 = require("@nestjs/typeorm");
 const config_1 = require("@nestjs/config");
-const database_entity_1 = require("./database.entity");
+const supabase_js_1 = require("@supabase/supabase-js");
 let DatabaseModule = class DatabaseModule {
 };
 exports.DatabaseModule = DatabaseModule;
 exports.DatabaseModule = DatabaseModule = __decorate([
+    (0, common_1.Global)(),
     (0, common_1.Module)({
-        imports: [
-            typeorm_1.TypeOrmModule.forRootAsync({
+        imports: [],
+        controllers: [],
+        providers: [
+            {
+                provide: 'SUPABASE',
                 useFactory: (configService) => {
-                    return {
-                        type: 'postgres',
-                        host: configService.get('DB_HOST'),
-                        port: configService.get('DB_PORT'),
-                        username: configService.get('DB_USER'),
-                        password: configService.get('DB_PASSWORD'),
-                        database: configService.get('DB_NAME'),
-                        entities: database_entity_1.default,
-                        synchronize: true,
-                    };
+                    return (0, supabase_js_1.createClient)(configService.get('SUPABASE_URL'), configService.get('SUPABASE_KEY'));
                 },
                 inject: [config_1.ConfigService],
-            }),
+            },
         ],
-        controllers: [],
-        providers: [],
+        exports: ['SUPABASE'],
     })
 ], DatabaseModule);
 //# sourceMappingURL=database.module.js.map

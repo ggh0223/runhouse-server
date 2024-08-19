@@ -9,10 +9,11 @@ import { CrewModule } from './crew/crew.module';
 import { ScheduleModule } from './schedule/schedule.module';
 import { MemberModule } from './member/member.module';
 import { AttendanceModule } from './attendance/attendance.module';
+import { KakaoStrategy } from 'src/common/auth/kakao.strategy';
 
 @Module({
   imports: [
-    // CommonModule,
+    CommonModule,
     TypeOrmModule.forFeature(entities),
     CrewModule,
     ScheduleModule,
@@ -20,6 +21,6 @@ import { AttendanceModule } from './attendance/attendance.module';
     AttendanceModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, KakaoStrategy],
 })
 export class AppModule {}

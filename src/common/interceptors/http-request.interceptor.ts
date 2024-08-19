@@ -1,26 +1,31 @@
-import { Injectable, NestInterceptor, ExecutionContext, CallHandler } from '@nestjs/common';
+import {
+  Injectable,
+  NestInterceptor,
+  ExecutionContext,
+  CallHandler,
+} from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { getNow } from 'src/common/util.service';
 
 @Injectable()
 export class HttpRequestInterceptor implements NestInterceptor {
-    constructor() {}
+  constructor() {}
 
-    intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
-        const request = context.switchToHttp().getRequest();
+  intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
+    const request = context.switchToHttp().getRequest();
 
-        console.log(`[${getNow()}] Request : \n`, {
-            path: request.url,
-            method: request.method,
-            body: request.body,
-            query: request.query,
-            params: request.params,
-        });
+    console.log(`[${getNow()}] Request : \n`, {
+      path: request.url,
+      method: request.method,
+      body: request.body,
+      query: request.query,
+      params: request.params,
+    });
 
-        request.user = {
-            userid: 1,
-        };
+    // request.user = {
+    //     userid: 1,
+    // };
 
-        return next.handle();
-    }
+    return next.handle();
+  }
 }

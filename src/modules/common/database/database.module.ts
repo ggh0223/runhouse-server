@@ -1,27 +1,25 @@
-import { Module } from '@nestjs/common';
+import { Module, Global } from '@nestjs/common';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { ConfigService } from '@nestjs/config';
 import entities from 'src/modules/common/database/database.entity';
+import { createClient } from '@supabase/supabase-js';
 
+@Global()
 @Module({
-  imports: [
-    TypeOrmModule.forRootAsync({
+  imports: [],
+  controllers: [],
+  providers: [
+    {
+      provide: 'SUPABASE',
       useFactory: (configService: ConfigService) => {
-        return {
-          type: 'postgres',
-          host: configService.get<string>('DB_HOST'),
-          port: configService.get<number>('DB_PORT'),
-          username: configService.get<string>('DB_USER'),
-          password: configService.get<string>('DB_PASSWORD'),
-          database: configService.get<string>('DB_NAME'),
-          entities: entities,
-          synchronize: true,
-        };
+        return createClient(
+          configService.get<string>('SUPABASE_URL'),
+          configService.get<string>('SUPABASE_KEY'),
+        );
       },
       inject: [ConfigService],
-    } as TypeOrmModuleOptions),
+    },
   ],
-  controllers: [],
-  providers: [],
+  exports: ['SUPABASE'],
 })
 export class DatabaseModule {}

@@ -1,22 +1,40 @@
-import { Controller, Get } from '@nestjs/common';
-import { AppService } from './app.service';
-import { createClient } from "@supabase/supabase-js";
-const supabaseUrl = "https://sazfajslhnvzhpaianhl.supabase.co";
-const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNhemZhanNsaG52emhwYWlhbmhsIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTcyMzAxNTc4NSwiZXhwIjoyMDM4NTkxNzg1fQ.d49EiTyPH5pnBzQDtuklxj2g05IKN9K7IPyD-OqdbDI";
+import { Controller, Get, UseGuards, Req, Res } from '@nestjs/common';
+import { Request, Response } from 'express';
 
-export const supabase = createClient(supabaseUrl, supabaseKey);
+import { AppService } from './app.service';
+import { Inject } from '@nestjs/common';
+import { SupabaseClient } from '@supabase/supabase-js';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(
+    private readonly appService: AppService,
+    @Inject('SUPABASE') private readonly supabase: SupabaseClient,
+  ) {}
 
   @Get()
   async getHello() {
-    const { data, error } = await supabase
-      .from("user")
-      .select("*")
+    const { data, error } = await this.supabase
+      .from('user')
+      .select('*')
       .single();
     console.log(data, error);
     return data;
+  }
+
+  @Get('kakao')
+  @UseGuards(AuthGuard('kakao')) // kakao.strategy를 실행시켜 줍니다.
+  async kakaoLogin(@Req() req: Request) {
+    console.log('kakaoLogin');
+    return req['user'];
+  }
+
+  @Get('oauth')
+  @UseGuards(AuthGuard('kakao'))
+  async callback(@Req() req: Request, @Res() res: Response) {
+    console.log('callback');
+    console.log(req['user']);
+    return res.send('callback');
   }
 }
