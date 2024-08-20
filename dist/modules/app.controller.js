@@ -8,38 +8,12 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var __param = (this && this.__param) || function (paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppController = void 0;
 const common_1 = require("@nestjs/common");
-const app_service_1 = require("./app.service");
-const common_2 = require("@nestjs/common");
-const supabase_js_1 = require("@supabase/supabase-js");
-const passport_1 = require("@nestjs/passport");
 let AppController = class AppController {
-    constructor(appService, supabase) {
-        this.appService = appService;
-        this.supabase = supabase;
-    }
-    async getHello() {
-        const { data, error } = await this.supabase
-            .from('user')
-            .select('*')
-            .single();
-        console.log(data, error);
-        return data;
-    }
-    async kakaoLogin(req) {
-        console.log('kakaoLogin');
-        return req['user'];
-    }
-    async callback(req, res) {
-        console.log('callback');
-        console.log(req['user']);
-        return res.send('callback');
-    }
+    constructor() { }
+    async getHello() { }
 };
 exports.AppController = AppController;
 __decorate([
@@ -48,27 +22,8 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], AppController.prototype, "getHello", null);
-__decorate([
-    (0, common_1.Get)('kakao'),
-    (0, common_1.UseGuards)((0, passport_1.AuthGuard)('kakao')),
-    __param(0, (0, common_1.Req)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", Promise)
-], AppController.prototype, "kakaoLogin", null);
-__decorate([
-    (0, common_1.Get)('oauth'),
-    (0, common_1.UseGuards)((0, passport_1.AuthGuard)('kakao')),
-    __param(0, (0, common_1.Req)()),
-    __param(1, (0, common_1.Res)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, Object]),
-    __metadata("design:returntype", Promise)
-], AppController.prototype, "callback", null);
 exports.AppController = AppController = __decorate([
     (0, common_1.Controller)(),
-    __param(1, (0, common_2.Inject)('SUPABASE')),
-    __metadata("design:paramtypes", [app_service_1.AppService,
-        supabase_js_1.SupabaseClient])
+    __metadata("design:paramtypes", [])
 ], AppController);
 //# sourceMappingURL=app.controller.js.map

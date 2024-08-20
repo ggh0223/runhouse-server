@@ -9,9 +9,8 @@ export class KakaoStrategy extends PassportStrategy(Strategy, 'kakao') {
     super({
       // 여기 적어준 정보를 가지고 카카오 서버에 POST /oauth/token 요청이 날아갑니다.
       clientID: configService.get('KAKAO_CLIENT_ID'),
-      //   clientSecret: configService.get('KAKAO_CLIENT_SECRET'),
-      //   callbackURL: `https://runhouse-server.vercel.app/oauth`,
-      callbackURL: `http://localhost:3000/oauth`,
+      clientSecret: configService.get('KAKAO_CLIENT_SECRET'),
+      callbackURL: `${configService.get('DOMAIN')}/api/auth/callback/kakao`,
       scope: 'profile_nickname profile_image account_email',
     });
   }
@@ -23,11 +22,14 @@ export class KakaoStrategy extends PassportStrategy(Strategy, 'kakao') {
     profile: Profile,
     done: (error: any, user?: any, info?: any) => void,
   ) {
-    console.log('validate');
     try {
-      const { _json } = profile;
+      const { _json, username } = profile;
       const user = {
-        kakaoId: _json.id,
+        social_id: _json.id,
+        name: username,
+        email: _json.kakao_account.email,
+        profile_image: _json.properties.profile_image,
+        thumbnail_image: _json.properties.thumbnail_image,
       };
       done(null, user);
     } catch (error) {

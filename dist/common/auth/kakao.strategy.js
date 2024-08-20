@@ -18,17 +18,21 @@ let KakaoStrategy = class KakaoStrategy extends (0, passport_1.PassportStrategy)
     constructor(configService) {
         super({
             clientID: configService.get('KAKAO_CLIENT_ID'),
-            callbackURL: `http://localhost:3000/oauth`,
+            clientSecret: configService.get('KAKAO_CLIENT_SECRET'),
+            callbackURL: `${configService.get('DOMAIN')}/api/auth/callback/kakao`,
             scope: 'profile_nickname profile_image account_email',
         });
         this.configService = configService;
     }
     async validate(accessToken, refreshToken, profile, done) {
-        console.log('validate');
         try {
-            const { _json } = profile;
+            const { _json, username } = profile;
             const user = {
-                kakaoId: _json.id,
+                social_id: _json.id,
+                name: username,
+                email: _json.kakao_account.email,
+                profile_image: _json.properties.profile_image,
+                thumbnail_image: _json.properties.thumbnail_image,
             };
             done(null, user);
         }

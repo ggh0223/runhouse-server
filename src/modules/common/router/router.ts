@@ -1,50 +1,35 @@
 import { AppModule } from 'src/modules/app.module';
-// import { UserModule } from '@src/modules/user/user.module';
-// import { ConfigsModule } from '@src/modules/config/config.module';
-// import { UnitModule } from '@src/modules/unit/unit.module';
-// import { LabelModule } from '@src/modules/label/label.module';
-// import { TcModule } from '@src/modules/tc/tc.module';
-// import { TmModule } from '@src/modules/tm/tm.module';
-// import { AuthModule } from '@src/modules/auth/auth.module';
+import { AttendanceModule } from 'src/modules/attendance/attendance.module';
+import { AuthModule } from 'src/modules/auth/auth.module';
+import { CrewModule } from 'src/modules/crew/crew.module';
+import { MemberModule } from 'src/modules/member/member.module';
+import { ScheduleModule } from 'src/modules/schedule/schedule.module';
 
 export const Routers = [
-    {
-        path: '/api',
-        module: AppModule,
-        // children: [
-        //     {
-        //         path: '/',
-        //         module: AuthModule,
-        //     },
-        //     {
-        //         path: '/',
-        //         module: TcModule,
-        //     },
-        //     {
-        //         path: '/',
-        //         module: TmModule,
-        //     },
-        //     {
-        //         path: '/system',
-        //         children: [
-        //             {
-        //                 path: '/',
-        //                 module: LabelModule,
-        //             },
-        //             {
-        //                 path: '/',
-        //                 module: UnitModule,
-        //             },
-        //             {
-        //                 path: '/',
-        //                 module: UserModule,
-        //             },
-        //             {
-        //                 path: '/',
-        //                 module: ConfigsModule,
-        //             },
-        //         ],
-        //     },
-        // ],
-    },
+  {
+    path: '/api',
+    module: AppModule,
+    children: [
+      {
+        path: '/',
+        module: AuthModule,
+      },
+      {
+        path: '/',
+        module: AttendanceModule,
+      },
+      {
+        path: '/',
+        module: CrewModule,
+      },
+      {
+        path: '/',
+        module: MemberModule,
+      },
+      {
+        path: '/',
+        module: ScheduleModule,
+      },
+    ],
+  },
 ];
